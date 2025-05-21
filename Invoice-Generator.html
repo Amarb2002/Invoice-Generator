@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="invoice-app">
+        <div class="sidebar">
+            <h1 class="invoice-title">Invoice Generator</h1>
+
+            <label for="imgInput">Company Logo</label>
+            <div class="custom-file-input">
+                <input type="file" id="imgInput" accept="image/*">
+            </div>
+
+            <div class="row">
+                <div class="emty">
+                    <label for="invoiceDate">Invoice Date</label>
+                    <input class="date" type="date" id="invoiceDate">
+                </div>
+                <div>
+                    <label for="dueDate">Due Date</label>
+                    <input type="date" id="dueDate">
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div>
+                    <label for="invoiceNum">Invoice Number</label>
+                    <input type="text" id="invoiceNum" placeholder="Enter Invoice Number">
+                </div>
+                <div>
+                    <label for="companyTax">Company Tax Number</label>
+                    <input type="text" id="companyTax" placeholder="Company Tax Number">
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label for="customerTax">Customer Tax Number</label>
+                    <input type="text" id="customerTax" placeholder="Customer Tax Number">
+                </div>
+                <div></div>
+            </div>
+            <label for="companyName"> Your Company Name (Bill From)</label>
+            <input type="text" id="companyName" placeholder="Your Company Name" maxlength="25">
+            <label for="companyAdd">Company Address (Bill From)</label>
+            <input type="text" id="companyAdd" placeholder="Company Address" maxlength="25">
+            <label for="companyPh">Company Phone (Bill From)</label>
+            <input type="text" id="companyPh" placeholder="Company Phone" maxlength="25">
+            <label for="companyEm">Company Email (Bill From)</label>
+            <input type="email" id="companyEm" placeholder="Company Email" maxlength="25">
+            <label for="customerName">Customer Name (Bill To)</label>
+            <input type="text" id="customerName" placeholder="Customer Name" maxlength="25">
+            <label for="customerAdd">Customer Address (Bill To)</label>
+            <input type="text" id="customerAdd" placeholder="Customer Address" maxlength="25">
+            <label for="customerPh">Customer Phone (Bill To)</label>
+            <input type="text" id="customerPh" placeholder="Customer Phone" maxlength="25">
+            <label for="customerEm">Customer Email (Bill To)</label>
+            <input type="email" id="customerEm" placeholder="Customer Email" maxlength="25">
+            <div class="add-product-section">Add Product</div>
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>Product Name & Description</th>
+                        <th>HSN/SAC Code</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" id="prdName" placeholder="Name"></td>
+                        <td><input type="text" id="prdCode" placeholder="Code"></td>
+                        <td><input type="number" id="prdPrice" placeholder="Price"></td>
+                        <td><input type="number" id="prdQty" placeholder="Qty"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button onclick="addItem()" class="add-btn">Add Item</button>
+            <div class="totals-row">
+                <label for="tax">Tax (%)</label>
+                <input type="number" id="tax" placeholder="0%" style="max-width:50%;">
+                <label for="discount">Discount (%)</label>
+                <input type="number" id="discount" placeholder="0%" style="max-width:50%;">
+                <label>Total</label>
+                <span id="leftTotal">0.00</span>
+            </div>
+            <label for="bankDetails">Bank Details</label>
+            <textarea class="bankinfo" id="bankDetails" placeholder="Enter bank details"></textarea>
+            <label for="notes">Notes</label>
+            <textarea class="bankinfo" id="notes" placeholder="Enter additional notes"></textarea>
+        </div>
+        <div class="main-content">
+            <div class="preview-header">
+                <div style="width:100%;">
+                    <div class="preview-title" style="width:100%;text-align:center;">Invoice Preview</div>
+                    <img id="logoPreview" class="logo-preview" src="#" alt="Logo Preview" />
+                    <div class="invoice-info-block">
+                        <div class="invoice-details">
+                            <strong>Invoice Number:</strong> <span id="prevInvoiceNum">#0001</span><br>
+                            <strong>Invoice Date:</strong> <span id="prevInvoiceDate">2025-05-19</span><br>
+                            <strong>Due Date:</strong> <span id="prevDueDate">2025-05-19</span>
+                        </div>
+                    </div>
+                    <div class="bill-info-block">
+                        <div class="invoice-details-left">
+                            <strong>Bill From:</strong><br>
+                            <span id="prevBillFrom">
+                                Company Name<br>
+                                Address<br>
+                                Phone<br>
+                                Email<br>
+                                Tax No
+                            </span>
+                        </div>
+                        <div class="invoice-details-right">
+                            <strong>Bill To:</strong><br>
+                            <span id="prevBillTo">
+                                Customer Name<br>
+                                Address<br>
+                                Phone<br>
+                                Email<br>
+                                Tax No
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name & Description</th>
+                        <th>HSN Code</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="prevProductBody">
+                    <tr>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>0.00</td>
+                        <td>0</td>
+                        <td>0.00</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="summary-row">
+                <div>Tax: <span id="prevTax">0.00</span></div>
+                <div>Discount: <span id="prevDiscount">0.00</span></div>
+                <div>Subtotal: <span id="prevSubtotal">0.00</span></div>
+            </div>
+            <button class="print-btn" onclick="window.print()">Print Invoice</button>
+        </div>
+    </div>
+    <script>
+        let products = [];
+        document.getElementById('imgInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            const img = document.getElementById('logoPreview');
+            if (!file) {
+                img.style.display = 'none';
+                img.src = '#';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                img.src = evt.target.result;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function addItem() {
+            const name = document.getElementById('prdName').value.trim();
+            const code = document.getElementById('prdCode').value.trim();
+            const price = parseFloat(document.getElementById('prdPrice').value) || 0;
+            const qty = parseInt(document.getElementById('prdQty').value) || 0;
+            if (!name || !code || price <= 0 || qty <= 0) {
+                alert('Please enter valid product details.');
+                return;
+            }
+            products.push({ name, code, price, qty });
+            document.getElementById('prdName').value = '';
+            document.getElementById('prdCode').value = '';
+            document.getElementById('prdPrice').value = '';
+            document.getElementById('prdQty').value = '';
+            updatePreview();
+        }
+
+        function updatePreview() {
+            document.getElementById('prevInvoiceNum').textContent = document.getElementById('invoiceNum').value || '#0001';
+            document.getElementById('prevInvoiceDate').textContent = document.getElementById('invoiceDate').value || 'YYYY-MM-DD';
+            document.getElementById('prevDueDate').textContent = document.getElementById('dueDate').value || 'YYYY-MM-DD';
+            document.getElementById('prevBillFrom').innerHTML =
+                (document.getElementById('companyName').value || 'Company Name') + '<br>' +
+                (document.getElementById('companyAdd').value || 'Address') + '<br>' +
+                (document.getElementById('companyPh').value || 'Phone') + '<br>' +
+                (document.getElementById('companyEm').value || 'Email') + '<br>' +
+                (document.getElementById('companyTax').value || 'Tax No');
+            document.getElementById('prevBillTo').innerHTML =
+                (document.getElementById('customerName').value || 'Customer Name') + '<br>' +
+                (document.getElementById('customerAdd').value || 'Address') + '<br>' +
+                (document.getElementById('customerPh').value || 'Phone') + '<br>' +
+                (document.getElementById('customerEm').value || 'Email') + '<br>' +
+                (document.getElementById('customerTax').value || 'Tax No');
+
+            const tbody = document.getElementById('prevProductBody');
+            tbody.innerHTML = '';
+            let subtotal = 0;
+            if (products.length === 0) {
+                tbody.innerHTML = `<tr>
+                    <td>N/A</td><td>N/A</td><td>0.00</td><td>0</td><td>0.00</td>
+                </tr>`;
+            } else {
+                products.forEach(p => {
+                    const total = p.price * p.qty;
+                    subtotal += total;
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${p.name}</td><td>${p.code}</td><td>${p.price.toFixed(2)}</td><td>${p.qty}</td><td>${total.toFixed(2)}</td>`;
+                    tbody.appendChild(tr);
+                });
+            }
+            const taxRate = parseFloat(document.getElementById('tax').value) || 0;
+            const discountRate = parseFloat(document.getElementById('discount').value) || 0;
+            const tax = subtotal * (taxRate / 100);
+            const discount = subtotal * (discountRate / 100);
+            const total = subtotal + tax - discount;
+            document.getElementById('prevTax').textContent = tax.toFixed(2);
+            document.getElementById('prevDiscount').textContent = discount.toFixed(2);
+            document.getElementById('prevSubtotal').textContent = total.toFixed(2);
+            document.getElementById('leftTotal').textContent = total.toFixed(2);
+        }
+
+        [
+            'invoiceNum', 'invoiceDate', 'dueDate', 'companyTax', 'customerTax', 'companyName', 'customerName',
+            'companyAdd', 'customerAdd', 'companyPh', 'customerPh', 'companyEm', 'customerEm', 'tax', 'discount'
+        ].forEach(id => {
+            document.getElementById(id).addEventListener('input', updatePreview);
+        });
+        updatePreview();
+    </script>
+</body>
+
+</html>
