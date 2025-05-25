@@ -7,7 +7,103 @@
     <title>Invoice Generator</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        .invalid-field {
+            border: 2px solid red !important;
+            background: #ffeaea;
+        }
 
+        /* Header styles */
+        .custom-header {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 0;
+            position: relative;
+            top: 0;
+            width: 100%;
+            text-align: center;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .header-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .header-divider {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, #007bff, #6610f2);
+            margin: 10px 0;
+        }
+
+        .header-author {
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        /* Footer styles */
+        .custom-footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        .footer-divider {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, #007bff, #6610f2);
+            margin: 10px 0;
+        }
+
+        .footer-author {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+
+        .footer-author b {
+            color: #343a40;
+        }
+
+        /* Fixed footer inside main content */
+        .fixed-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px 0;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .main-content {
+            position: relative;
+            padding-bottom: 60px;
+            /* Space for the fixed footer */
+        }
     </style>
 </head>
 
@@ -40,32 +136,34 @@
                 </div>
                 <div>
                     <label for="companyTax">Company Tax Number</label>
-                    <input type="text" id="companyTax" placeholder="Company Tax Number">
+                    <input type="text" id="companyTax" placeholder="Company Tax Number" required maxlength="10"
+                        pattern="\d{10}">
                 </div>
             </div>
             <div class="row">
                 <div>
                     <label for="customerTax">Customer Tax Number</label>
-                    <input type="text" id="customerTax" placeholder="Customer Tax Number">
+                    <input type="text" id="customerTax" placeholder="Customer Tax Number" required maxlength="10"
+                        pattern="\d{10}">
                 </div>
                 <div></div>
             </div>
             <label for="companyName"> Your Company Name (Bill From)</label>
-            <input type="text" id="companyName" placeholder="Your Company Name" maxlength="25">
+            <input type="text" id="companyName" placeholder="Your Company Name" maxlength="25" required>
             <label for="companyAdd">Company Address (Bill From)</label>
-            <input type="text" id="companyAdd" placeholder="Company Address" maxlength="25">
+            <input type="text" id="companyAdd" placeholder="Company Address" maxlength="25" required>
             <label for="companyPh">Company Phone (Bill From)</label>
-            <input type="text" id="companyPh" placeholder="Company Phone" maxlength="25">
+            <input type="tel" id="companyPh" placeholder="Company Phone" maxlength="10" required pattern="\d{10}">
             <label for="companyEm">Company Email (Bill From)</label>
-            <input type="email" id="companyEm" placeholder="Company Email" maxlength="25">
+            <input type="email" id="companyEm" placeholder="Company Email" maxlength="50" required>
             <label for="customerName">Customer Name (Bill To)</label>
-            <input type="text" id="customerName" placeholder="Customer Name" maxlength="25">
+            <input type="text" id="customerName" placeholder="Customer Name" maxlength="25" required>
             <label for="customerAdd">Customer Address (Bill To)</label>
-            <input type="text" id="customerAdd" placeholder="Customer Address" maxlength="25">
+            <input type="text" id="customerAdd" placeholder="Customer Address" maxlength="25" required>
             <label for="customerPh">Customer Phone (Bill To)</label>
-            <input type="text" id="customerPh" placeholder="Customer Phone" maxlength="25">
+            <input type="tel" id="customerPh" placeholder="Customer Phone" maxlength="10" required pattern="\d{10}">
             <label for="customerEm">Customer Email (Bill To)</label>
-            <input type="email" id="customerEm" placeholder="Customer Email" maxlength="25">
+            <input type="email" id="customerEm" placeholder="Customer Email" maxlength="50" required>
             <div class="add-product-section">Add Product</div>
             <table class="product-table">
                 <thead>
@@ -78,14 +176,16 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="text" id="prdName" placeholder="Name"></td>
-                        <td><input type="text" id="prdCode" placeholder="Code"></td>
-                        <td><input type="number" id="prdPrice" placeholder="Price"></td>
-                        <td><input type="number" id="prdQty" placeholder="Qty"></td>
+                        <td><input type="text" id="prdName" placeholder="Name" required maxlength="50"></td>
+                        <td>
+                            <input type="text" id="prdCode" placeholder="Code" required maxlength="8" pattern="\d{8}">
+                        </td>
+                        <td><input type="number" id="prdPrice" placeholder="Price" required min="0.01" step="0.01"></td>
+                        <td><input type="number" id="prdQty" placeholder="Qty" required min="1" step="1"></td>
                     </tr>
                 </tbody>
             </table>
-            <button onclick="addItem()" class="add-btn">Add Item</button>
+
             <div class="totals-row">
                 <label for="tax">Tax (%)</label>
                 <input type="number" id="tax" placeholder="0%" style="max-width:50%;">
@@ -94,6 +194,7 @@
                 <label>Total</label>
                 <span id="leftTotal">0.00</span>
             </div>
+            <button onclick="addItem()" class="add-btn">Add Item</button>
             <label for="bankDetails">Bank Details</label>
             <textarea class="bankinfo" id="bankDetails" placeholder="Enter bank details"></textarea>
             <label for="notes">Notes</label>
@@ -102,7 +203,7 @@
         <div class="main-content">
             <div class="preview-header">
                 <div style="width:100%;">
-                    <div class="preview-title" style="width:100%;text-align:center;">Invoice Preview</div>
+                    <div class="preview-title" style="width:100%;text-align:center;">Invoice</div>
                     <img id="logoPreview" class="logo-preview" src="#" alt="Logo Preview" />
                     <div class="invoice-info-block">
                         <div class="invoice-details">
@@ -144,6 +245,7 @@
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Total</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="prevProductBody">
@@ -153,6 +255,7 @@
                         <td>0.00</td>
                         <td>0</td>
                         <td>0.00</td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
@@ -161,7 +264,27 @@
                 <div>Discount: <span id="prevDiscount">0.00</span></div>
                 <div>Subtotal: <span id="prevSubtotal">0.00</span></div>
             </div>
-            <button class="print-btn" onclick="window.print()">Print Invoice</button>
+            <div class="bank-details-row" style="margin-top:10px; color:#232946; font-size:1rem;">
+                <strong>Bank Details:</strong>
+                <div id="prevBankDetails" style="white-space:pre-line;"></div>
+            </div>
+            <button class="print-btn" onclick="validateAndPrint()">Print Invoice</button>
+            <!-- Keep only this footer -->
+            <footer class="custom-footer fixed-footer">
+                <div class="footer-content">
+                    <span class="footer-title">Invoice Generator</span>
+                    <span class="footer-divider"></span>
+                    <span class="footer-author">
+                        Developed by
+                        <b>
+                            <a href="https://github.com/Amarb2002" target="_blank"
+                                style="color:inherit;text-decoration:none;">
+                                Amar Bambalawade
+                            </a>
+                        </b>
+                    </span>
+                </div>
+            </footer>
         </div>
     </div>
     <script>
@@ -182,21 +305,125 @@
             reader.readAsDataURL(file);
         });
 
+        function markInvalid(el, isInvalid) {
+            if (isInvalid) {
+                el.classList.add('invalid-field');
+            } else {
+                el.classList.remove('invalid-field');
+            }
+        }
+
+        function validateProductFields() {
+            let valid = true;
+            const nameEl = document.getElementById('prdName');
+            const codeEl = document.getElementById('prdCode');
+            const priceEl = document.getElementById('prdPrice');
+            const qtyEl = document.getElementById('prdQty');
+            const taxEl = document.getElementById('tax');
+            const discountEl = document.getElementById('discount');
+            const name = nameEl.value.trim();
+            const code = codeEl.value.trim();
+            const price = parseFloat(priceEl.value) || 0;
+            const qty = parseInt(qtyEl.value) || 0;
+            const tax = taxEl.value.trim();
+            const discount = discountEl.value.trim();
+
+            // HSN/SAC code must be exactly 8 digits
+            const hsnValid = /^\d{8}$/.test(code);
+
+            markInvalid(nameEl, !name);
+            markInvalid(codeEl, !hsnValid);
+            markInvalid(priceEl, price <= 0);
+            markInvalid(qtyEl, qty <= 0);
+            markInvalid(taxEl, tax === '' || isNaN(Number(tax)));
+            markInvalid(discountEl, discount === '' || isNaN(Number(discount)));
+
+            if (!hsnValid) {
+                alert('HSN/SAC Code must be exactly 8 digits.');
+                valid = false;
+            }
+
+            if (!name) valid = false;
+            if (price <= 0) valid = false;
+            if (qty <= 0) valid = false;
+            if (tax === '' || isNaN(Number(tax))) valid = false;
+            if (discount === '' || isNaN(Number(discount))) valid = false;
+
+            if (!valid && hsnValid) {
+                alert('Please fill all product fields, tax, and discount correctly.');
+            }
+            return valid;
+        }
+
+        function validateInvoiceFields() {
+            const requiredFields = [
+                { id: 'invoiceNum', label: 'Invoice Number' },
+                { id: 'invoiceDate', label: 'Invoice Date' },
+                { id: 'dueDate', label: 'Due Date' },
+                { id: 'companyTax', label: 'Company Tax Number' },
+                { id: 'customerTax', label: 'Customer Tax Number' },
+                { id: 'companyName', label: 'Company Name' },
+                { id: 'companyAdd', label: 'Company Address' },
+                { id: 'companyPh', label: 'Company Phone' },
+                { id: 'companyEm', label: 'Company Email', type: 'email' },
+                { id: 'customerName', label: 'Customer Name' },
+                { id: 'customerAdd', label: 'Customer Address' },
+                { id: 'customerPh', label: 'Customer Phone' },
+                { id: 'customerEm', label: 'Customer Email', type: 'email' }
+            ];
+            let valid = true;
+            function isValidEmail(email) {
+                // Require at least one dot after @ and at least 2 chars after last dot
+                return /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email);
+            }
+            function isValidPhone(id, value) {
+                // Only 10 digit numbers
+                return /^\d{10}$/.test(value);
+            }
+            for (const field of requiredFields) {
+                const el = document.getElementById(field.id);
+                let isEmpty = !el.value.trim();
+                let isInvalid = false;
+                if (field.id === 'companyTax' || field.id === 'customerTax') {
+                    isInvalid = !/^\d{10}$/.test(el.value.trim());
+                } else if (field.type === 'email') {
+                    isInvalid = !isValidEmail(el.value.trim());
+                } else if (field.type === 'tel' || field.id === 'companyPh' || field.id === 'customerPh') {
+                    isInvalid = !/^\d{10}$/.test(el.value.trim());
+                } else {
+                    isInvalid = isEmpty;
+                }
+                markInvalid(el, isInvalid);
+                if (isInvalid) valid = false;
+            }
+            if (products.length === 0) {
+                alert('At least one product must be added.');
+                valid = false;
+            }
+            if (!valid) {
+                alert('Please fill all required fields correctly.');
+            }
+            return valid;
+        }
+
         function addItem() {
+            // Only add if validation passes!
+            if (!validateProductFields()) return;
             const name = document.getElementById('prdName').value.trim();
             const code = document.getElementById('prdCode').value.trim();
             const price = parseFloat(document.getElementById('prdPrice').value) || 0;
             const qty = parseInt(document.getElementById('prdQty').value) || 0;
-            if (!name || !code || price <= 0 || qty <= 0) {
-                alert('Please enter valid product details.');
-                return;
-            }
             products.push({ name, code, price, qty });
             document.getElementById('prdName').value = '';
             document.getElementById('prdCode').value = '';
             document.getElementById('prdPrice').value = '';
             document.getElementById('prdQty').value = '';
             updatePreview();
+        }
+
+        function validateAndPrint() {
+            if (!validateInvoiceFields()) return;
+            window.print();
         }
 
         function updatePreview() {
@@ -221,14 +448,24 @@
             let subtotal = 0;
             if (products.length === 0) {
                 tbody.innerHTML = `<tr>
-                    <td>N/A</td><td>N/A</td><td>0.00</td><td>0</td><td>0.00</td>
+                    <td>N/A</td><td>N/A</td><td>0.00</td><td>0</td><td>0.00</td><td></td>
                 </tr>`;
             } else {
-                products.forEach(p => {
+                products.forEach((p, idx) => {
                     const total = p.price * p.qty;
                     subtotal += total;
                     const tr = document.createElement('tr');
-                    tr.innerHTML = `<td>${p.name}</td><td>${p.code}</td><td>${p.price.toFixed(2)}</td><td>${p.qty}</td><td>${total.toFixed(2)}</td>`;
+                    tr.innerHTML = `
+                        <td>${p.name}</td>
+                        <td>${p.code}</td>
+                        <td>${p.price.toFixed(2)}</td>
+                        <td>${p.qty}</td>
+                        <td>${total.toFixed(2)}</td>
+                        <td>
+                            <button onclick="editProduct(${idx})" class="edit-btn" title="Edit">Edit</button>
+                            <button onclick="deleteProduct(${idx})" class="delete-btn" title="Delete">Delete</button>
+                        </td>
+                    `;
                     tbody.appendChild(tr);
                 });
             }
@@ -241,15 +478,68 @@
             document.getElementById('prevDiscount').textContent = discount.toFixed(2);
             document.getElementById('prevSubtotal').textContent = total.toFixed(2);
             document.getElementById('leftTotal').textContent = total.toFixed(2);
+            document.getElementById('prevBankDetails').textContent = document.getElementById('bankDetails').value || '';
+        }
+
+        function deleteProduct(idx) {
+            products.splice(idx, 1);
+            updatePreview();
+        }
+
+        function editProduct(idx) {
+            const p = products[idx];
+            document.getElementById('prdName').value = p.name;
+            document.getElementById('prdCode').value = p.code;
+            document.getElementById('prdPrice').value = p.price;
+            document.getElementById('prdQty').value = p.qty;
+            // Remove the product so that after editing, user can re-add (update)
+            products.splice(idx, 1);
+            updatePreview();
         }
 
         [
             'invoiceNum', 'invoiceDate', 'dueDate', 'companyTax', 'customerTax', 'companyName', 'customerName',
-            'companyAdd', 'customerAdd', 'companyPh', 'customerPh', 'companyEm', 'customerEm', 'tax', 'discount'
+            'companyAdd', 'customerAdd', 'companyPh', 'customerPh', 'companyEm', 'customerEm', 'tax', 'discount',
+            'bankDetails'
         ].forEach(id => {
             document.getElementById(id).addEventListener('input', updatePreview);
         });
+
+        // Add these lines to update preview when typing in product fields
+        ['prdName', 'prdCode', 'prdPrice', 'prdQty'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updatePreview);
+        });
+
         updatePreview();
+
+        // // Dummy data for testing
+        // function fillDummyData() {
+        //     document.getElementById('invoiceNum').value = 'INV-2024-001';
+        //     document.getElementById('invoiceDate').value = '2024-06-01';
+        //     document.getElementById('dueDate').value = '2024-06-10';
+        //     document.getElementById('companyTax').value = '1234567890';
+        //     document.getElementById('customerTax').value = '9876543210';
+        //     document.getElementById('companyName').value = 'Dummy Company Pvt Ltd';
+        //     document.getElementById('companyAdd').value = '123 Dummy Street, City';
+        //     document.getElementById('companyPh').value = '9876543210';
+        //     document.getElementById('companyEm').value = 'company@example.com';
+        //     document.getElementById('customerName').value = 'Test Customer';
+        //     document.getElementById('customerAdd').value = '456 Customer Ave, Town';
+        //     document.getElementById('customerPh').value = '9123456789';
+        //     document.getElementById('customerEm').value = 'customer@example.com';
+        //     document.getElementById('prdName').value = 'Test Product';
+        //     document.getElementById('prdCode').value = '12345678';
+        //     document.getElementById('prdPrice').value = '100.50';
+        //     document.getElementById('prdQty').value = '2';
+        //     document.getElementById('tax').value = '18';
+        //     document.getElementById('discount').value = '5';
+        //     document.getElementById('bankDetails').value = 'Bank: Dummy Bank\nA/C: 123456789\nIFSC: DUMM0001234';
+        //     document.getElementById('notes').value = 'This is a test note.';
+        //     updatePreview();
+        // }
+
+        // // Fill dummy data on page load for testing
+        // window.addEventListener('DOMContentLoaded', fillDummyData);
     </script>
 </body>
 

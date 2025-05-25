@@ -112,6 +112,9 @@ input::placeholder {
 .custom-file-input:hover::before {
     background-color: #333;
 }
+input:invalid:focus {
+    border: 2px solid red;
+}
 
 .sidebar h1 {
     font-size: 2.1rem;
@@ -139,6 +142,7 @@ input::placeholder {
     background: #121629;
     color: #e0e0e0;
     transition: box-shadow 0.2s;
+    padding-left: 16px; /* Add left padding for space before data */
 }
 
 .sidebar input:focus,
@@ -235,6 +239,8 @@ input::placeholder {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    position: relative;
+    padding-bottom: 80px; /* Add space for fixed footer */
 }
 
 .main-content .preview-header {
@@ -396,34 +402,98 @@ img{
     box-shadow: none;
     padding: 0;
     flex: 1;
+    /* Ensure right alignment for print as well */
 }
 
-/* Responsive: stack vertically on small screens */
-@media (max-width: 900px) {
-    .bill-info-block {
-        flex-direction: column;
-        gap: 8px;
-        align-items: stretch;
-    }
-    .bill-info-block .invoice-details-left,
-    .bill-info-block .invoice-details-right {
-        text-align: left;
-        flex: unset;
-    }
+.edit-btn, .delete-btn {
+    border: none;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin: 0 2px;
+    transition: background 0.2s, color 0.2s;
 }
 
-@media (max-width: 600px) {
-    .bill-info-block {
-        flex-direction: column;
-        gap: 6px;
-        align-items: stretch;
-    }
-    .bill-info-block .invoice-details-left,
-    .bill-info-block .invoice-details-right {
-        font-size: 0.97rem;
-        padding: 6px 4px;
-        text-align: left;
-    }
+.edit-btn {
+    background: #eebbc3;
+    color: #232946;
+}
+
+.edit-btn:hover {
+    background: #f7d6d9;
+    color: #232946;
+}
+
+.delete-btn {
+    background: #ff4d4f;
+    color: #fff;
+}
+
+.delete-btn:hover {
+    background: #d9363e;
+    color: #fff;
+}
+
+footer {
+    text-align: center;
+    color: #232946;
+    margin: 18px 0 8px 0;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+footer span {
+    display: block;
+    font-size: 0.95rem;
+    color: #6b7280;
+    margin-top: 2px;
+}
+footer.custom-footer {
+    background: linear-gradient(90deg, #232946 0%, #393e6b 100%);
+    color: #eebbc3;
+    padding: 18px 0 12px 0;
+    margin: 24px 0 0 0;
+    font-size: 1.08rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 -2px 12px rgba(60,60,120,0.07);
+    /* Remove width: 100%; so it fits inside .main-content */
+}
+footer .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+footer .footer-title {
+    font-weight: 700;
+    font-size: 1.13rem;
+    letter-spacing: 1px;
+    color: #eebbc3;
+}
+footer .footer-divider {
+    width: 40px;
+    height: 2px;
+    background: #eebbc3;
+    border-radius: 2px;
+    margin: 2px 0;
+    display: block;
+}
+footer .footer-author {
+    font-size: 1rem;
+    color: #fff;
+    letter-spacing: 0.2px;
+}
+footer .footer-author b {
+    color: #eebbc3;
+    font-weight: 600;
+}
+footer.custom-footer.fixed-footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    z-index: 10;
 }
 
 @media print {
@@ -451,6 +521,31 @@ img{
         margin: 0 !important;
     }
     .main-content .print-btn {
+        display: none !important;
+    }
+    .bill-info-block {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 24px !important;
+        align-items: flex-start !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+    }
+    .bill-info-block .invoice-details-left {
+        text-align: left !important;
+        flex: 1 !important;
+    }
+    .bill-info-block .invoice-details-right {
+        text-align: right !important;
+        flex: 1 !important;
+    }
+    .edit-btn, .delete-btn {
+        display: none !important;
+    }
+    footer {
+        display: none !important;
+    }
+    footer.custom-footer {
         display: none !important;
     }
 }
